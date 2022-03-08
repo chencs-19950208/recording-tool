@@ -2,10 +2,10 @@
   "name": "recording-tool",
   "version": "1.0.0",
   "description": "A Recording Tool",
-  "main": "recorder.js",
+  "main": "./dist/recorder.js",
+  "types": "./dist/recorder.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "rimraf dist && webpack",
     "start": "webpack serve"
   },
   "keywords": [
@@ -20,8 +20,10 @@
     "@babel/preset-env": "^7.13.12",
     "@babel/runtime": "^7.13.10",
     "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0",
     "ts-loader": "^9.2.7",
     "typescript": "^4.6.2",
+    "wave-resampler": "^1.0.0",
     "webpack": "5.28.0",
     "webpack-cli": "4.6.0"
   }

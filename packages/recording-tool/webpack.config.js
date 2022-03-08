@@ -1,10 +1,15 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, './libs/recorder.ts'), // 入口
   output: { // 输出
     path: path.join(__dirname, './dist'),
-    filename: 'bundle.js'
+    filename: 'recorder.js'
+  },
+  devtool: "source-map",
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"]
   },
   module: {
     rules: [
@@ -23,5 +28,8 @@ module.exports = {
       }
     ]
   },
-  mode: 'development'
+  plugins: [
+    new CleanWebpackPlugin()
+  ],
+  mode: 'development',
 }

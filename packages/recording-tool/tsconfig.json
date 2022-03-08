@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "outDir": "./dist/",
+    "module": "esnext",
     "target": "es5",
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "declaration": true,
+    "declarationDir": "./dist/",
+    // "declarationMap": true,
+    "moduleResolution": "node",
     "sourceMap": true,
-    "allowJs": true
+    "allowJs": true,
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": [
-    "libs/**/*.ts"
+    "./libs/**/*.ts"
   ],
   "exclude": [
     "node_modules"
