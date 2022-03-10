@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Readable } from 'stream';
 import CoolPatch from './recorder.patch';
 class CoolRecorder {
@@ -82,7 +83,12 @@ class CoolRecorder {
 
   // 销毁
   destory() {
-
+    // @ts-ignore
+    this.workerToInt16 && this.workerToInt16.terminate();
+    // @ts-ignore
+    this.workerToMP3 && this.workerToMP3.terminate();
+    // @ts-ignore
+    this.mediaStream && this.mediaStream.stop();
   };
 
   // 判断当前环境是否支持
@@ -119,7 +125,89 @@ class CoolRecorder {
     `)
   };
 
+  async record() {
+    // @ts-ignore
+    await this.init();
 
+    // @ts-ignore
+    if (this.recording) return;
+
+    // @ts-ignore
+    this.recording = true;
+
+    // 重置存储
+    this.audioBuffers = [];
+
+    if(!this.mediaStream) {
+      await this.init(true);
+    };
+
+    // 打开stream
+    this.audioContext = new window.AudioContext();
+    this.inputSampleRate = this.audioContext.sampleRate;
+    this.mediaNode = this.audioContext.createMediaStreamSource(this.mediaStream);
+
+    if (!this.audioContext.createScriptProcessor) {
+      this.audioContext.createScriptProcessor = this.audioContext.createJavaScriptNode;
+    };
+
+    // 创建一个 jsNode
+    this.jsNode = this.audioContext.createScriptProcessor(4096, 1, 1);
+    this.jsNode.connect(this.audioContext.destination);
+    this.jsNode.onaudioprocess = this._onAudioProcess.bind(this);
+    this.mediaNode.connect(this.jsNode);
+  };
+
+  // 停止
+  stop() {
+    if (this.recording) {
+      this.jsNode.disconnect();
+      this.mediaNode.disconnect();
+      this.jsNode.onaudioprocess = null;
+      this.jsNode = null;
+      this.mediaNode = null;
+      this.recording = false
+    };
+
+    return this.audioBuffers
+  };
+
+  // 处理WAV 格式音频
+  async toWAV(sampleRate = 16000) {
+    if(!this.workerToWAV) await this.workerWAV();
+
+    return new Promise(resolve => {
+      this.workerToWAV.postMessage({
+        audioBuffers: this.audioBuffers,
+        inputSampleRate: this.inputSampleRate,
+        outputSampleRate: sampleRate,
+        type: 'wav'
+      });
+
+      this.workerToWAV.onmessage = event => resolve(event.data);
+    })
+  };
+
+  async toShortEnergy() {
+    const { default: Worker } = await import('./recorder.worker');
+    const worker = new Worker();
+
+    return new Promise(resolve => {
+      worker.postMessage({
+        audioBuffers: this.audioBuffers,
+        type: 'short-energy'
+      });
+
+      worker.onmessage = event => resolve(event.data)
+    })
+  };
+
+  _onAudioProcess(e) {
+    const audioBuffer = e.inputBuffer;
+    
+    this.audioBuffers.push(audioBuffer.getChannelData(0).slice(0));
+    this.onAudioProcess && this.onAudioProcess(e);
+  }
 };
 
 export default CoolRecorder;
