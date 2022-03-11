@@ -1,17 +1,6 @@
-//@ts-nocheck
-import { Readable } from 'stream';
 import CoolPatch from './recorder.patch';
-class CoolRecorder {
-  protected inited: boolean;
-  protected jsNode: string;
-  protected mediaNode: string;
-  protected mediaStream: Readable;
-  protected audioContext: string;
-  protected audioBuffers: unknown[];
-  protected onAudioProcess: string;
-  protected inputSampleRate: number;
-  protected outputSampleRate: number;
 
+class CoolRecorder {
   constructor() {
     this.inited = false;
     this.jsNode = null;
@@ -35,7 +24,7 @@ class CoolRecorder {
   static instance = new CoolRecorder();
 
   // 初始化
-  async init(reinit: boolean): Promise<Readable> {
+  async init(reinit) {
     if (this.inited && !reinit) return;
     this.inited = true;
     
@@ -49,14 +38,12 @@ class CoolRecorder {
     if (!this.support()) throw new Error('No Support!')
 
     // 获取音频流
-    let NEW_MEDIASTREAM: Readable;
-    //@ts-ignore
-    NEW_MEDIASTREAM = await window.navigator.mediaDevices.getUserMedia({
+    const NEW_MEDIASTREAM = await window.navigator.mediaDevices.getUserMedia({
       audio: {
-        sampleRate: 44100, // 采样率
+        // sampleRate: 44100, // 采样率
         channelCount: 1, // 声道
-        echoCancellation: true,
-        noiseSuppression: true 
+        // echoCancellation: true,
+        // noiseSuppression: true 
       }
     })
 
@@ -211,3 +198,5 @@ class CoolRecorder {
 };
 
 export default CoolRecorder;
+
+console.log(CoolRecorder, 'CoolRecorder---');

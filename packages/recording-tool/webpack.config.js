@@ -2,14 +2,16 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, './libs/recorder.ts'), // 入口
+  entry: path.join(__dirname, './libs/recorder.js'), // 入口
   output: { // 输出
     path: path.join(__dirname, './dist'),
-    filename: 'recorder.js'
+    filename: 'recorder.js',
+    library: 'recorder',
+    libraryTarget: 'umd',
   },
   devtool: "source-map",
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".js"]
   },
   module: {
     rules: [
@@ -19,13 +21,6 @@ module.exports = {
         use: 'babel-loader',
         exclude: /node_modules/
       },
-      {
-        test: /\.ts?$/,
-        use: {
-          loader: 'ts-loader',
-        },
-        exclude: /node_modules/
-      }
     ]
   },
   plugins: [

@@ -53,3 +53,5 @@ export const parseQueryString = <Str extends string> (queryStr: Str): ParseQuery
 
   return queryObj as any;
 };
+
+const res = parseQueryString('a=1&b=3&c=4')

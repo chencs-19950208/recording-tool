@@ -1,4 +1,4 @@
-export default function shortTimeEnergy(audioData: unknown[]) {
+export default function shortTimeEnergy(audioData) {
   let sum = 0;
   const energy = [];
   const { length } = audioData;
