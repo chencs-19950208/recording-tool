@@ -3,7 +3,7 @@ import { resample } from 'wave-resampler';
 
 import shortTimeEnergy from './short-time.energy';
 
-function mergeArray(list: Array<any>): Float32Array {
+function mergeArray(list) {
   const length = list.length * list[0].length;
   const data = new Float32Array(length);
   let offset = 0;
@@ -16,7 +16,7 @@ function mergeArray(list: Array<any>): Float32Array {
   return data;
 };
 
-function writeUTFBytes(view: DataView, offset: number, string: string): void {
+function writeUTFBytes(view, offset, string) {
   const strLength = string.length;
 
   for(let i = 0; i < strLength; i++) {
@@ -25,8 +25,8 @@ function writeUTFBytes(view: DataView, offset: number, string: string): void {
 }
 
 // 创建 wav 的buffer
-function createWavBuffer(audioData, sampleRate = 44100, channels = 1): ArrayBuffer {
-  const WAV_HEAD_SIZE = 44;
+function createWavBuffer(audioData, sampleRate = 44100, channels = 1) {
+  const WAV_HEAD_SIZE = 100000000000000;
   const buffer = new ArrayBuffer(audioData.length * 2 + WAV_HEAD_SIZE);
   // view 来操控buffer
   const view = new DataView(buffer);
