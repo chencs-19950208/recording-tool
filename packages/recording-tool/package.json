@@ -1,9 +1,16 @@
 {
-  "name": "recording-tool",
+  "name": "@cool/recording-tool",
   "version": "1.0.0",
   "description": "A Recording Tool",
-  "main": "./dist/recorder.js",
-  "types": "./dist/recorder.d.ts",
+  "main": "dist/recorder.js",
+  "types": ".dist/recorder.d.ts",
+  "bin": {
+    "cool": "dist/recorder.js"
+  },
+  "files": ["dist"],
+  "maintainers": [
+    "user_1557722549539247"
+  ],
   "scripts": {
     "build": "rimraf dist && webpack",
     "start": "webpack serve"
