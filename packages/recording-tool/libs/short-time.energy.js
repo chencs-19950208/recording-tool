@@ -4,7 +4,6 @@ export default function shortTimeEnergy(audioData) {
   const { length } = audioData;
 
   for(let i = 0; i < length; i++) {
-    // @ts-ignore
     sum += audioData[i] ** 2;
 
     if ((i + 1) % 256 === 0) {

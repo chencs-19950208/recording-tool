@@ -1,15 +1,15 @@
 const path = require('path');
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, './libs/recorder.js'), // 入口
+  entry: path.join(__dirname, './libs/index.js'), // 入口
   output: { // 输出
     path: path.join(__dirname, './dist'),
-    filename: 'recorder.js',
-    library: 'recorder',
+    filename: 'index.js',
+    library: 'CoolRecorder',
     libraryTarget: 'umd',
   },
-  devtool: "source-map",
   resolve: {
     extensions: [".js"]
   },
@@ -17,14 +17,16 @@ module.exports = {
     rules: [
       {
         // 配置 babel 转化的规则
-        test: /\.js/, 
+        test: /\.js$/, 
         use: 'babel-loader',
         exclude: /node_modules/
       },
     ]
   },
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new CleanWebpackPlugin()
   ],
   mode: 'development',
+  devServer: {}
 }
