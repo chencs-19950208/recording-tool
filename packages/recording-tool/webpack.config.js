@@ -21,9 +21,15 @@ module.exports = {
         use: 'babel-loader',
         exclude: /node_modules/
       },
+      {
+        // 对于worker文件进行打包
+        test: /\.worker\.js$/,
+        use: { loader: 'worker-loader', options: { inline: true }}
+      }
     ]
   },
   plugins: [
+    // 使得打包得体积更小
     new webpack.optimize.ModuleConcatenationPlugin(),
     new CleanWebpackPlugin()
   ],
