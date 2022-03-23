@@ -16,7 +16,6 @@ class CoolRecorder {
 
     window.onbeforeunload = () => {
       this.destory();
-      // @ts-ignore
       if (unloadCB) return unloadCB()
     };
   };
@@ -54,27 +53,19 @@ class CoolRecorder {
 
   // web worker 优化性能
   async initWorkers() {
-    // @ts-ignore
     const { default: Worker } = await import('./recorder.worker');
 
-    // @ts-ignore
     if (this.workToInt16) return;
 
-    // @ts-ignore
     this.workerToInt16 = new Worker();
-    // @ts-ignore
     this.workerToMP3 = new Worker();
-    //@ts-ignore
     this.workerToWAV = new Worker();
   };
 
   // 销毁
   destory() {
-    // @ts-ignore
     this.workerToInt16 && this.workerToInt16.terminate();
-    // @ts-ignore
     this.workerToMP3 && this.workerToMP3.terminate();
-    // @ts-ignore
     this.mediaStream && this.mediaStream.stop();
   };
 
@@ -82,10 +73,8 @@ class CoolRecorder {
   support() {
     const devices = navigator.mediaDevices || {};
 
-    // @ts-ignore
     devices.getUserMedia = devices.getUserMedia || devices.webkitGetUserMedia || devices.mozGetUserMedia || devices.msGetUserMedia;
 
-    // @ts-ignore
     return !!devices.getUserMedia && window.Worker;
   }
 
@@ -94,7 +83,6 @@ class CoolRecorder {
     console.log(`recording info: 
       AudioContext: ${!!window.AudioContext},
       webkitAudioContext: ${
-        // @ts-ignore
         !!window.webkitAudioContext
       },
       mediaDevices: ${!!window.MediaDevices},
@@ -102,24 +90,19 @@ class CoolRecorder {
         navigator.mediaDevices && navigator.mediaDevices.getUserMedia
       )},
       navigator.getUserMedia: ${
-        //@ts-ignore
         !!navigator.getUserMedia
       },
       navigator.webkitGetUserMedia: ${
-        // @ts-ignore
         !!navigator.webkitGetUserMedia
       },
     `)
   };
 
   async record() {
-    // @ts-ignore
     await this.init();
 
-    // @ts-ignore
     if (this.recording) return;
 
-    // @ts-ignore
     this.recording = true;
 
     // 重置存储
@@ -161,7 +144,7 @@ class CoolRecorder {
 
   // 处理WAV 格式音频
   async toWAV(sampleRate = 16000) {
-    if(!this.workerToWAV) await this.workerWAV();
+    if(!this.workerToWAV) await this.initWorkers();
 
     return new Promise(resolve => {
       this.workerToWAV.postMessage({
@@ -198,5 +181,3 @@ class CoolRecorder {
 };
 
 export default CoolRecorder;
-
-console.log(CoolRecorder, 'CoolRecorder---');
