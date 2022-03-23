@@ -1,6 +1,6 @@
 {
   "name": "@cool/recording-tool",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A Recording Tool",
   "main": "dist/index.js",
   "bin": {
@@ -32,6 +32,7 @@
     "wave-resampler": "^1.0.0",
     "webpack": "5.28.0",
     "webpack-cli": "4.6.0",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "worker-loader": "^2.0.0"
   }
 }
