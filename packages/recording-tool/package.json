@@ -1,6 +1,6 @@
 {
   "name": "@cool/recording-tool",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "A Recording Tool",
   "main": "dist/index.js",
   "bin": {

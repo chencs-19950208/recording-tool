@@ -634,14 +634,23 @@ class CoolRecorder {
     CoolPatch();
     if (!this.support()) throw new Error('not_support')
 
-    const mediaStream = await window.navigator.mediaDevices.getUserMedia({
-      audio: {
-        sampleRate: 44100, // 采样率
-        channelCount: 1, // 声道
-        echoCancellation: true,
-        noiseSuppression: true,
-      },
-    })
+    let mediaStream
+
+    if (!window.mediaStream) {
+      mediaStream = await window.navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: 44100, // 采样率
+          channelCount: 1, // 声道
+          echoCancellation: true,
+          noiseSuppression: true,
+        },
+      })
+  
+      window.mediaStream = mediaStream;
+    } else {
+      mediaStream = window.mediaStream
+    };
+
     if (!mediaStream) throw new Error('stream open fail')
     this.mediaStream = mediaStream
     return mediaStream
